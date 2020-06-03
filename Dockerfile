@@ -14,7 +14,8 @@ FROM debian:buster
 RUN mkdir install-config && apt-get update && apt-get -y upgrade
 RUN apt-get install -y nginx mariadb-server mariadb-client wget \
         php7.3 php7.3-fpm php7.3-mysql php-common php7.3-cli  \
-        php7.3-common php7.3-json php7.3-opcache php7.3-readline openssl
+        php7.3-common php7.3-json php7.3-opcache php7.3-readline \
+	php-mbstring openssl
 
 ADD ./srcs ./install-config
 
@@ -24,8 +25,7 @@ RUN mkdir -p ./var/www/config_domain/ \
 && service mysql start \
 && mysql -u root < ./install-config/mysql-config.sql
 
-RUN mkdir -p ./var/www/config_domain/ \
-&& wget https://fr.wordpress.org/latest-fr_FR.tar.gz -P /tmp \
+RUN wget https://fr.wordpress.org/latest-fr_FR.tar.gz -P /tmp \
 && tar xzf /tmp/latest-fr_FR.tar.gz -C /var/www/config_domain \
 && cp ./install-config/wp-config.php /var/www/config_domain/wordpress/wp-config.php \
 && chown -R www-data:www-data /var/www/config_domain/wordpress/ \
@@ -33,8 +33,10 @@ RUN mkdir -p ./var/www/config_domain/ \
 
 RUN wget https://files.phpmyadmin.net/phpMyAdmin/4.9.3/phpMyAdmin-4.9.3-english.tar.gz -P /tmp \
 && tar xzf /tmp/phpMyAdmin-4.9.3-english.tar.gz -C /var/www/config_domain/ \
-&& cp /var/www/config_domain/phpMyAdmin-4.9.3-english/config.sample.inc.php /var/www/config_domain/phpMyAdmin-4.9.3-english/config.inc.php \
-&& mv /var/www/config_domain/phpMyAdmin-4.9.3-english /var/www/config_domain/phpmyadmin 
+&& cp install-config/config.inc.php /var/www/config_domain/phpMyAdmin-4.9.3-english/config.inc.php \
+&& mv /var/www/config_domain/phpMyAdmin-4.9.3-english /var/www/config_domain/phpmyadmin  \
+&& mkdir /var/www/config_domain/phpmyadmin/tmp \
+&& chmod 777 -R /var/www/config_domain/phpmyadmin/tmp
 
 RUN mkdir -p /etc/ssl/certs && mkdir -p /etc/ssl/private \
 && openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj '/C=FR/ST=75/L=Paris/O=42/CN=localhost' \
