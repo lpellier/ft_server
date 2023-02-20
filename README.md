@@ -4,6 +4,8 @@
 
 [![Built With][built-with-docker]][project-url]
 
+<img class="banner-image" src="./../images/ft_server.gif" alt="a gif of the project building.."/>
+
 # 1. Getting started
 The goal of this project is to setup a server running Wordpress aswell as a MySQL database with phpMyAdmin, secured with an SSL certificate.
 
@@ -22,7 +24,7 @@ $ docker build -t server .
 # 2. Usage
 ```bash
 # Run the server image in a container
-docker run --name ft_server -it -p 80:80 -p 443:443 server
+$ docker run --name ft_server -it -p 80:80 -p 443:443 server
 ```
 
 The following addresses are now available :
@@ -37,6 +39,10 @@ If you'd like to test everything, you should create a Wordpress account (directl
 
 phpmyadmin will require a username (`user`) and a password (`password`).
 <br/>
+
+<img class="usage-image" src="./../images/ft_server_wp.gif" alt="a gif showing the wordpress website"/>
+
+<img class="usage-image" src="./../images/ft_server_php.gif" alt="a gif showing the php database"/>
 
 # 3. Contact
 [![LinkedIn][linkedin-shield]][linkedin-url]
